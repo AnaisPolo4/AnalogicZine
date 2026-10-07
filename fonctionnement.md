@@ -1,7 +1,7 @@
 # AnalogicZine
 
 Ce fichier dit à quoi sert l'app et comment elle est censée marcher.
-L'écran (`index.html`, `styles.css`) ne fait encore que montrer ce parcours.
+L'écran (`index.html`, `styles.css`, `edition.js`) montre le parcours.
 Rien n'est branché : pas de compte, pas de base, pas d'envoi des images, pas d'IA.
 
 ---
@@ -22,41 +22,57 @@ pas un calendrier à afficher.
 
 ## Comment ça fonctionne
 
-Trois temps, dans cet ordre. On peut revenir en arrière.
-L'impression n'a de sens qu'une fois les images rassemblées,
-mais l'écran d'impression existe déjà pour qu'on voie le format.
+Une seule page, trois temps les uns sous les autres. Le fond est gris clair, les titres sont blancs.
 
-### 1. Déposer
+Une bulle est blanche tant qu'elle n'est pas remplie. Elle passe au gris quand c'est fait.
 
-On pose les scans d'une pellicule développée.
-Les fichiers restent sur l'appareil tant qu'on n'a pas décidé où les garder.
-Le champ est là ; il ne prévisualise pas encore les images.
+### 1. Prise de contenu
+
+**Déposer** — les photos, et ce qu'on veut écrire avec. Blanche tant qu'il n'y a rien. Grise dès qu'au moins une image est choisie. Les fichiers restent sur l'appareil.
+
+**Analyser** — on la presse ensuite. Ziny compte les images, les portraits et les horizontales, d'après le cadre du fichier. Rien n'est envoyé. La bulle devient grise, et les trois comptes s'affichent à côté. Le tri par sujet n'existe pas encore.
 
 ### 2. Rassembler
 
-Une IA proposera des catégories et des groupes.
-On pourra déplacer une image, renommer un groupe, en retirer une.
-Rien de tout ça n'est calculé aujourd'hui : les piles à l'écran sont des emplacements vides.
+On choisit ici comment une image se pose sur la page. Trois poses :
 
-La règle de rassemblement n'est pas décidée. Pistes, sans choix :
+- **Pleine page** — l'image couvre toute la feuille.
+- **Alignée en bas** — l'image est collée au bas, le blanc reste au-dessus.
+- **Alignés au bord gauche** — l'image est collée au bord gauche, le blanc reste à droite.
 
-- par sujet
-- par lumière
-- dans l'ordre de la pellicule
-- selon ce qui tient ensemble sur une double page
+Deux façons de l'appliquer :
 
-On tranche ça avant de brancher un modèle. Pas avant.
+- **Toute l'édition** — la même pose sur chaque page. On règle le nombre de pages.
+- **Mix** — on dit combien de pages prennent chaque pose. Elles se suivent dans l'ordre de la liste : d'abord les pleines pages, puis celles alignées en bas, puis celles au bord gauche. Seize pages au plus.
 
-### 3. Imprimer
+Le bouton **Texte** ouvre un champ. On écrit, et on choisit une des cinq typos. Le texte se pose sur chaque page : sur l'image si elle est pleine, dans le blanc au-dessus si elle est en bas, dans le blanc à droite si elle est au bord gauche.
 
-Le rassemblement devient une mise en page.
-Format de départ : A5, quatre pages — couverture, une image pleine,
-une page de groupe, un colophon.
-Peu de texte. Les images d'abord.
+Une page porte une image, pour l'instant. Les cadres sont vides tant que les scans ne s'affichent pas.
 
-Le bouton « Imprimer » n'envoie que ces pages (le reste de l'app est masqué à l'impression).
-Le cahier changera quand on saura comment les images se groupent :
-nombre de pages, une ou deux images par page, légendes ou non.
+L'IA qui proposerait des catégories n'est pas branchée. La règle de regroupement des images entre elles n'est toujours pas décidée (sujet, lumière, ordre de la pellicule, ce qui tient sur une double). On tranche ça avant de brancher un modèle.
+
+### 3. Aperçu
+
+Le livret se regarde comme dans InDesign : des doubles pages sur la table.
+
+La page 1 est seule, à droite. Ensuite les pages se touchent deux à deux — 2 avec 3, 4 avec 5 — sans espace dans la double. L'espace est entre les doubles. S'il reste une page paire à la fin, elle est seule à gauche.
+
+Le bouton « Imprimer » sort ces pages une par une, au format choisi sur la première page (A6 ou A5). L'écran, lui, montre les doubles.
+
+---
+
+## Typo
+
+Une seule famille : BBB Poppins TN, Text. Rien d'autre.
+Les fichiers sont dans `fonts/`, copiés depuis `~/Library/Fonts` pour que la page puisse les charger.
+
+- Regular
+- Regular italique
+- SemiBold — titres et nom
+- Bold
+- Bold italique
+
+Le navigateur ne fabrique pas de gras ni d'italique de remplacement (`font-synthesis: none`).
 
 ---
 
@@ -64,14 +80,15 @@ nombre de pages, une ou deux images par page, légendes ou non.
 
 - Où vivent les images (sur l'appareil seulement, ou quelque part en ligne).
 - Quel service d'IA, et avec quelles images on accepte de les lui envoyer.
-- Les légendes : rien, une date, un lieu, une ligne libre.
-- Le papier final : A5 est un point de départ, pas un choix fermé.
+- Les légendes image par image : aujourd'hui, un seul texte pour toutes les pages.
+- Le papier : A6 et A5 se choisissent. Un autre format n'est pas prévu.
 
 ---
 
 ## Où c'est dans le code
 
 - `index.html` — les trois écrans. Un commentaire en tête renvoie ici.
-- `styles.css` — l'apparence, et la règle d'impression en bas du fichier.
-- Pas de JavaScript, à part `print()` sur le bouton. Le changement d'écran
-  se fait avec l'ancre dans l'adresse (`#deposer`, `#rassembler`, `#imprimer`).
+- `styles.css` — la typo, les doubles pages, et la règle d'impression en bas du fichier.
+- `edition.js` — lit la mise en page et le texte, puis construit les pages de l'aperçu.
+- Le changement d'écran se fait avec l'ancre dans l'adresse
+  (`#deposer`, `#rassembler`, `#apercu`).

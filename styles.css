@@ -1,11 +1,57 @@
-/* Écran de travail. L'édition imprimée est en bas, dans @media print.
+/* Toute la typo vient des cinq fichiers BBB Poppins TN, dans fonts/.
+   L'aperçu est une planche de doubles pages.
+   L'impression, en bas, sort chaque page en A5.
    Le rôle du produit est dans fonctionnement.md */
+
+@font-face {
+  font-family: "BBB Poppins TN";
+  src: url("fonts/BBBPoppinsTN-TextRegular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BBB Poppins TN";
+  src: url("fonts/BBBPoppinsTN-TextRegularItalic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BBB Poppins TN";
+  src: url("fonts/BBBPoppinsTN-TextSemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BBB Poppins TN";
+  src: url("fonts/BBBPoppinsTN-TextBold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "BBB Poppins TN";
+  src: url("fonts/BBBPoppinsTN-TextBoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 
 :root {
   --encre: #1c1b19;
-  --papier: #efece6;
-  --feuille: #fffef8;
-  --discret: #6f6a64;
+  --papier: #d9d9d9;
+  --feuille: #ffffff;
+  --discret: #c4c4c4;
+  --gris: #c4c4c4;
+  --faite: #b3b3b3;
+  --image: #e4dfd4;
+  --typo: "BBB Poppins TN", sans-serif;
 }
 
 * {
@@ -20,71 +66,49 @@ body {
   margin: 0;
   background: var(--papier);
   color: var(--encre);
-  font-family: system-ui, sans-serif;
+  font-family: var(--typo);
+  font-weight: 400;
+  font-style: normal;
   font-size: 16px;
-  line-height: 1.5;
-}
-
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--encre);
-  background: var(--papier);
-  position: sticky;
-  top: 0;
-}
-
-.marque {
-  margin: 0;
-  font-family: "Iowan Old Style", Palatino, Georgia, serif;
-  font-size: 22px;
-}
-
-nav {
-  display: flex;
-  gap: 4px;
-}
-
-nav a {
-  color: inherit;
-  text-decoration: none;
-  padding: 10px 12px;
-}
-
-body:not(:has(#rassembler:target)):not(:has(#imprimer:target)) a[href="#deposer"],
-body:has(#rassembler:target) a[href="#rassembler"],
-body:has(#imprimer:target) a[href="#imprimer"] {
-  text-decoration: underline;
-  text-underline-offset: 6px;
+  line-height: 1.4;
+  font-synthesis: none;
 }
 
 main {
-  padding: 32px 20px 96px;
-  max-width: 880px;
-  margin: 0 auto;
+  padding: 36px 40px 96px;
+  max-width: none;
+  margin: 0;
 }
 
-main > section {
-  display: none;
+.etape {
+  display: grid;
+  grid-template-columns: minmax(160px, 240px) minmax(0, 1fr);
+  gap: 28px 48px;
+  align-items: start;
+  margin-top: 88px;
 }
 
-main > section:target {
+.etape:first-child {
+  margin-top: 8px;
+}
+
+.etape h1 {
+  margin: 0;
+  color: #fff;
+  font-weight: 600;
+  font-size: 42px;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
+.etape h1 span {
   display: block;
 }
 
-body:not(:has(main > section:target)) #deposer {
-  display: block;
-}
-
-h1 {
-  margin: 0 0 8px;
-  font-family: "Iowan Old Style", Palatino, Georgia, serif;
-  font-size: 32px;
-  font-weight: 500;
-  letter-spacing: -0.02em;
+.contenu {
+  max-width: 680px;
+  margin-left: auto;
+  width: 100%;
 }
 
 h1 + p {
@@ -92,22 +116,183 @@ h1 + p {
   max-width: 38em;
 }
 
+.bulle {
+  background: var(--feuille);
+  border-radius: 22px;
+  color: var(--gris);
+}
+
+.bulle.faite,
+.modes label:has(input:checked),
+.mise:has(input:checked),
+.typos label:has(input:checked) {
+  background: var(--faite);
+  color: #fff;
+}
+
 .depot {
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 280px;
-  padding: 24px;
-  border: 1px dashed var(--encre);
-  background: var(--feuille);
-  text-align: center;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 112px;
+  padding: 22px 28px;
   cursor: pointer;
 }
 
-.depot input {
+.depot-nom {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 34px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.chevron {
+  width: 28px;
+  height: 28px;
+}
+
+.depot-note {
+  max-width: 16em;
+  text-align: right;
+  font-size: 14px;
+  line-height: 1.25;
+  color: #d0d0d0;
+}
+
+.depot.faite .depot-note,
+.analyser.faite .analyser-note {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.rangee {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.analyser {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  min-height: 176px;
+  padding: 22px 24px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.analyser-nom {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.analyser-note {
+  font-size: 13px;
+  line-height: 1.3;
+  color: #d0d0d0;
+}
+
+.compteurs {
+  list-style: none;
+  margin: 0;
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-height: 176px;
+}
+
+.compteurs li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #c8c8c8;
+}
+
+.rond {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #e6e6e6;
+  color: #bdbdbd;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.bulle-format {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 88px;
+  margin-top: 16px;
+  padding: 0 28px;
+  font-weight: 600;
+}
+
+.bulle-format span {
+  color: #b5b5b5;
+}
+
+body[data-format="a6"] #label-a6,
+body[data-format="a5"] #label-a5 {
+  color: #5c5c5c;
+}
+
+.bulle-format input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 28px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.bulle-format input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: #d5d5d5;
+  border-radius: 999px;
+}
+
+.bulle-format input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 26px;
+  height: 26px;
+  margin-top: -11px;
+  border: 0;
+  border-radius: 50%;
+  background: #9a9a9a;
+}
+
+.bulle-format input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: #d5d5d5;
+  border: 0;
+  border-radius: 999px;
+}
+
+.bulle-format input[type="range"]::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  border: 0;
+  border-radius: 50%;
+  background: #9a9a9a;
+}
+
+.depot input,
+.modes input,
+.mise input,
+.typos input {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -119,60 +304,152 @@ h1 + p {
   border: 0;
 }
 
-.depot strong {
-  font-family: "Iowan Old Style", Palatino, Georgia, serif;
-  font-size: 28px;
-  font-weight: 500;
-}
-
-.depot span,
 .note {
   color: var(--discret);
 }
 
 .note {
-  margin: 12px 0 0;
+  margin: 0 0 16px;
   font-size: 14px;
 }
 
-.piles {
-  display: grid;
-  gap: 16px;
+.modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
 }
 
-.pile {
-  padding: 16px;
+.modes label,
+.mise,
+.typos label {
+  position: relative;
+  cursor: pointer;
+}
+
+.modes label {
+  padding: 14px 18px;
+  border: 0;
+  border-radius: 18px;
+}
+
+.mise {
+  border: 0;
+  border-radius: 18px;
+  color: var(--gris);
+}
+
+.mises {
+  display: grid;
+  gap: 8px;
+}
+
+.mise {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--feuille);
+}
+
+.modes label:focus-within,
+.mise:focus-within,
+.typos label:focus-within,
+.pas button:focus-visible,
+.bouton-texte:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--encre);
+  outline-offset: 2px;
+}
+
+.schema {
+  display: flex;
+  flex-shrink: 0;
+  width: 36px;
+  height: 50px;
+  border: 1px solid var(--encre);
+  background: var(--feuille);
+}
+
+.schema i {
+  display: block;
+  background: var(--image);
+}
+
+.schema.pleine i {
+  flex: 1;
+}
+
+.schema.bas {
+  align-items: flex-end;
+}
+
+.schema.bas i {
+  width: 100%;
+  height: 58%;
+}
+
+.schema.gauche i {
+  width: 58%;
+  height: 100%;
+}
+
+.compte,
+.mix li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.compte {
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.mix {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.mix li {
+  padding: 12px;
   background: var(--feuille);
   border: 1px solid var(--encre);
 }
 
-.pile h2 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 500;
+.mix li > span:nth-child(2) {
+  flex: 1;
 }
 
-.cadres {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin: 16px 0 0;
-  padding: 0;
-  list-style: none;
+.pas {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
 }
 
-.cadres li,
-.cadre {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 3 / 2;
-  border: 1px solid var(--encre);
-  color: var(--discret);
+.pas span {
+  min-width: 2ch;
+  text-align: center;
   font-variant-numeric: tabular-nums;
 }
 
+.total {
+  margin: 16px 0 0;
+}
+
+button,
+textarea {
+  font-family: var(--typo);
+  font-synthesis: none;
+}
+
 button {
-  font: inherit;
+  font-size: 16px;
+  font-weight: 400;
   color: var(--feuille);
   background: var(--encre);
   border: 0;
@@ -181,8 +458,95 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background: #000;
+.pas button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+}
+
+button.bulle:hover,
+label.bulle:hover {
+  background: var(--feuille);
+}
+
+.bulle.faite:hover,
+.modes label:has(input:checked):hover,
+.mise:has(input:checked):hover,
+.typos label:has(input:checked):hover {
+  background: var(--faite);
+  color: #fff;
+}
+
+.bouton-texte,
+.imprimer {
+  margin-top: 16px;
+  color: var(--gris);
+  background: var(--feuille);
+  border: 0;
+  border-radius: 18px;
+}
+
+.bouton-texte.faite,
+.bouton-texte[aria-expanded="true"] {
+  color: #fff;
+  background: var(--faite);
+}
+
+.champ {
+  display: block;
+  margin: 16px 0 8px;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--encre);
+  border-radius: 0;
+  background: var(--feuille);
+  color: var(--encre);
+  font-size: 16px;
+  line-height: 1.4;
+  resize: vertical;
+}
+
+.typos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.typos label {
+  padding: 10px 12px;
+  background: var(--feuille);
+  border: 0;
+  border-radius: 14px;
+}
+
+.typo-regular {
+  font-weight: 400;
+  font-style: normal;
+}
+
+.typo-italic {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.typo-semibold {
+  font-weight: 600;
+  font-style: normal;
+}
+
+.typo-bold {
+  font-weight: 700;
+  font-style: normal;
+}
+
+.typo-bolditalic {
+  font-weight: 700;
+  font-style: italic;
 }
 
 :focus-visible {
@@ -190,117 +554,166 @@ button:hover {
   outline-offset: 2px;
 }
 
+/* Planche : une double a la largeur de deux pages, sans espace entre elles.
+   A5 = 148 × 210 mm, A6 = 105 × 148 mm. L'espace est entre les doubles. */
 .cahier {
-  display: grid;
-  gap: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
   margin-top: 32px;
-  justify-items: center;
+}
+
+.double {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  width: min(100%, 296mm);
+}
+
+body[data-format="a6"] .double {
+  width: min(100%, 210mm);
+}
+
+.solo-droite .page {
+  grid-column: 2;
+}
+
+.solo-gauche .page {
+  grid-column: 1;
 }
 
 .page {
-  display: flex;
-  flex-direction: column;
-  width: min(100%, 148mm);
+  position: relative;
   aspect-ratio: 148 / 210;
-  padding: 8%;
   background: var(--feuille);
   border: 1px solid var(--encre);
-  font-family: "Iowan Old Style", Palatino, Georgia, serif;
-}
-
-.page h2 {
-  margin: 0;
-  font-size: 36px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-}
-
-.kicker,
-.bas {
-  margin: 0;
-  font-size: 13px;
-  color: var(--discret);
-}
-
-.cadre.grand {
-  flex: 1;
-  margin: 8% 0;
-  aspect-ratio: auto;
-}
-
-.grille {
-  flex: 1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 4%;
-  margin-top: 8%;
-  min-height: 0;
-}
-
-/* Sur la page, le cadre remplit sa case. Le ratio 3/2 des piles
-   les ferait déborder d'une feuille A5. */
-.grille .cadre {
-  aspect-ratio: auto;
-  width: 100%;
-  height: 100%;
   min-width: 0;
-  min-height: 0;
+  overflow: hidden;
+  container-type: inline-size;
 }
 
-.colophon .bas {
-  margin-top: auto;
+body[data-format="a6"] .page {
+  aspect-ratio: 105 / 148;
 }
 
-.colophon .bas p {
-  margin: 0 0 8px;
-  color: var(--encre);
+.double .page + .page {
+  border-left: 0;
 }
 
-.colophon .kicker {
-  margin-bottom: 12px;
+.cadre {
+  position: absolute;
+  background: var(--image);
+}
+
+.num {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.legende {
+  position: absolute;
+  z-index: 1;
+  margin: 0;
+  font-size: 6.5cqw;
+  line-height: 1.25;
+  white-space: pre-wrap;
+}
+
+.page[data-mise="pleine"] .cadre {
+  inset: 0;
+}
+
+.page[data-mise="pleine"] .legende {
+  left: 6%;
+  right: 6%;
+  bottom: 6%;
+}
+
+.page[data-mise="bas"] .cadre {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58%;
+}
+
+.page[data-mise="bas"] .legende {
+  top: 8%;
+  left: 6%;
+  right: 6%;
+}
+
+.page[data-mise="gauche"] .cadre {
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 58%;
+}
+
+.page[data-mise="gauche"] .legende {
+  top: 8%;
+  left: 64%;
+  right: 5%;
 }
 
 @media (min-width: 720px) {
-  .piles {
+  .mises {
     grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
 @media (max-width: 719px) {
-  header {
-    display: block;
-    border-bottom: 0;
+  main {
+    padding: 24px 16px 48px;
   }
 
-  nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
-    justify-content: space-around;
-    background: var(--papier);
-    border-top: 1px solid var(--encre);
-    padding-bottom: env(safe-area-inset-bottom);
+  .etape {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 56px;
   }
 
-  nav a {
-    padding: 16px 8px;
+  .etape h1 {
+    font-size: 34px;
+  }
+
+  .contenu {
+    margin-left: 0;
+  }
+
+  .depot {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 0;
+  }
+
+  .depot-note {
+    text-align: left;
+  }
+
+  .rangee {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Seules les pages du cahier partent à l'impression. */
+/* À l'impression, chaque page redevient une feuille, A6 ou A5. */
 @media print {
-  header,
   .pas-imprimer,
-  #deposer,
-  #rassembler {
+  .imprimer {
     display: none !important;
   }
 
-  #imprimer {
+  #apercu {
     display: block !important;
+    margin: 0;
+  }
+
+  #apercu h1 {
+    display: none;
   }
 
   body,
@@ -313,11 +726,27 @@ button:hover {
   .cahier {
     display: block;
     margin: 0;
+    gap: 0;
   }
 
-  .page {
+  .double {
+    display: block;
+    width: auto;
+  }
+
+  body[data-format="a5"] .page {
+    page: a5sheet;
     width: 148mm;
     height: 210mm;
+    aspect-ratio: auto;
+    border: 0;
+    break-after: page;
+  }
+
+  body[data-format="a6"] .page {
+    page: a6sheet;
+    width: 105mm;
+    height: 148mm;
     aspect-ratio: auto;
     border: 0;
     break-after: page;
@@ -327,8 +756,13 @@ button:hover {
     break-after: auto;
   }
 
-  @page {
+  @page a5sheet {
     size: A5;
+    margin: 0;
+  }
+
+  @page a6sheet {
+    size: A6;
     margin: 0;
   }
 }

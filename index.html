@@ -3,111 +3,170 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AnalogicZine</title>
+    <title>Ziny</title>
     <link rel="stylesheet" href="styles.css" />
     <!--
-      À quoi sert l'app, et comment elle doit fonctionner : fonctionnement.md
-      Ici, seulement l'écran. Trois temps. Rien n'est enregistré.
+      À quoi sert l'app : fonctionnement.md
+      Une page, trois temps. Une bulle blanche n'est pas encore remplie.
+      Elle passe au gris quand c'est fait.
     -->
   </head>
-  <body>
-    <header>
-      <p class="marque">AnalogicZine</p>
-      <nav>
-        <a href="#deposer">Déposer</a>
-        <a href="#rassembler">Rassembler</a>
-        <a href="#imprimer">Imprimer</a>
-      </nav>
-    </header>
-
+  <body data-format="a5">
     <main>
-      <section id="deposer">
-        <h1>Déposer une pellicule</h1>
-        <p>Les scans d'un développement. Une pellicule donne une édition.</p>
-        <label class="depot">
-          <input type="file" accept="image/*" multiple />
-          <strong>Déposer les scans</strong>
-          <span>ou les choisir sur l'appareil</span>
-        </label>
-        <p class="note">Rien ne quitte cet appareil. Le rangement viendra après.</p>
-      </section>
+      <section class="etape pas-imprimer" id="prise">
+        <h1><span>1.</span>Prise de contenu</h1>
+        <div class="contenu">
+          <label class="bulle depot" id="deposer">
+            <input type="file" accept="image/*" multiple />
+            <span class="depot-nom">
+              Déposer
+              <svg class="chevron" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <span class="depot-note">Des photographies, des images avec textes, ce que tu veux</span>
+          </label>
 
-      <section id="rassembler">
-        <h1>Rassembler</h1>
-        <p>
-          L'app proposera des catégories et des groupes. On n'a pas encore
-          décidé comment. Ces piles sont des emplacements, pas un tri.
-        </p>
-        <div class="piles">
-          <article class="pile">
-            <h2>Groupe 1</h2>
-            <ul class="cadres">
-              <li>01</li>
-              <li>02</li>
-              <li>03</li>
-              <li>04</li>
+          <div class="rangee">
+            <button type="button" class="bulle analyser" id="analyser">
+              <span class="analyser-nom">Analyser</span>
+              <span class="analyser-note">Laisse Ziny observer ton contenu. Il le triera et tâchera de le trier.</span>
+            </button>
+            <ul class="bulle compteurs">
+              <li><span class="rond" id="n-images">0</span> images</li>
+              <li><span class="rond" id="n-portraits">0</span> portraits</li>
+              <li><span class="rond" id="n-horizontales">0</span> horizontale</li>
             </ul>
-          </article>
-          <article class="pile">
-            <h2>Groupe 2</h2>
-            <ul class="cadres">
-              <li>05</li>
-              <li>06</li>
-            </ul>
-          </article>
-          <article class="pile">
-            <h2>À placer</h2>
-            <ul class="cadres">
-              <li>07</li>
-              <li>08</li>
-              <li>09</li>
-            </ul>
-          </article>
+          </div>
         </div>
       </section>
 
-      <section id="imprimer">
-        <div class="pas-imprimer">
-          <h1>Mini édition</h1>
-          <p>
-            Quatre pages A5. Couverture, une image, un groupe, un colophon.
-            Le cahier bougera quand on saura comment rassembler.
-          </p>
-          <button type="button" onclick="print()">Imprimer</button>
+      <section class="etape pas-imprimer" id="mise">
+        <h1><span>2.</span>Mise en page</h1>
+        <div class="contenu">
+          <div id="reglages">
+            <div class="modes" role="radiogroup" aria-label="Façon d'appliquer la mise en page">
+              <label class="bulle">
+                <input type="radio" name="mode" value="fixe" checked />
+                Toute l'édition
+              </label>
+              <label class="bulle">
+                <input type="radio" name="mode" value="mix" />
+                Mix
+              </label>
+            </div>
+
+            <div id="reglage-fixe">
+              <div class="mises" role="radiogroup" aria-label="Mise en page">
+                <label class="mise bulle">
+                  <input type="radio" name="mise" value="pleine" checked />
+                  <span class="schema pleine" aria-hidden="true"><i></i></span>
+                  Pleine page
+                </label>
+                <label class="mise bulle">
+                  <input type="radio" name="mise" value="bas" />
+                  <span class="schema bas" aria-hidden="true"><i></i></span>
+                  Alignée en bas
+                </label>
+                <label class="mise bulle">
+                  <input type="radio" name="mise" value="gauche" />
+                  <span class="schema gauche" aria-hidden="true"><i></i></span>
+                  Alignés au bord gauche
+                </label>
+              </div>
+              <div class="compte">
+                <span>Pages</span>
+                <div class="pas">
+                  <button type="button" data-cible="compte" data-step="-1" aria-label="Retirer une page">−</button>
+                  <span id="compte">4</span>
+                  <button type="button" data-cible="compte" data-step="1" aria-label="Ajouter une page">+</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="reglage-mix" hidden>
+              <p class="note">Dans cet ordre : pleine page, puis alignée en bas, puis bord gauche.</p>
+              <ul class="mix">
+                <li>
+                  <span class="schema pleine" aria-hidden="true"><i></i></span>
+                  <span>Pleine page</span>
+                  <div class="pas">
+                    <button type="button" data-cible="pleine" data-step="-1" aria-label="Une pleine page de moins">−</button>
+                    <span id="n-pleine">2</span>
+                    <button type="button" data-cible="pleine" data-step="1" aria-label="Une pleine page de plus">+</button>
+                  </div>
+                </li>
+                <li>
+                  <span class="schema bas" aria-hidden="true"><i></i></span>
+                  <span>Alignée en bas</span>
+                  <div class="pas">
+                    <button type="button" data-cible="bas" data-step="-1" aria-label="Une page alignée en bas de moins">−</button>
+                    <span id="n-bas">1</span>
+                    <button type="button" data-cible="bas" data-step="1" aria-label="Une page alignée en bas de plus">+</button>
+                  </div>
+                </li>
+                <li>
+                  <span class="schema gauche" aria-hidden="true"><i></i></span>
+                  <span>Alignés au bord gauche</span>
+                  <div class="pas">
+                    <button type="button" data-cible="gauche" data-step="-1" aria-label="Une page au bord gauche de moins">−</button>
+                    <span id="n-gauche">1</span>
+                    <button type="button" data-cible="gauche" data-step="1" aria-label="Une page au bord gauche de plus">+</button>
+                  </div>
+                </li>
+              </ul>
+              <p class="total"><span id="total">4</span> pages</p>
+            </div>
+
+            <div class="bulle bulle-format">
+              <span id="label-a6">A6</span>
+              <input type="range" id="format" min="0" max="1" step="1" value="1" aria-label="Format, A6 ou A5" />
+              <span id="label-a5">A5</span>
+            </div>
+
+            <button type="button" class="bulle bouton-texte" id="ouvrir-texte" aria-expanded="false" aria-controls="panneau-texte">
+              Texte
+            </button>
+
+            <div id="panneau-texte" hidden>
+              <label class="champ" for="texte">Écrire</label>
+              <textarea id="texte" rows="3" class="typo-regular"></textarea>
+              <div class="typos" role="radiogroup" aria-label="Typo">
+                <label class="bulle">
+                  <input type="radio" name="typo" value="regular" checked />
+                  <span class="typo-regular">Regular</span>
+                </label>
+                <label class="bulle">
+                  <input type="radio" name="typo" value="italic" />
+                  <span class="typo-italic">Regular italique</span>
+                </label>
+                <label class="bulle">
+                  <input type="radio" name="typo" value="semibold" />
+                  <span class="typo-semibold">SemiBold</span>
+                </label>
+                <label class="bulle">
+                  <input type="radio" name="typo" value="bold" />
+                  <span class="typo-bold">Bold</span>
+                </label>
+                <label class="bulle">
+                  <input type="radio" name="typo" value="bolditalic" />
+                  <span class="typo-bolditalic">Bold italique</span>
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        <div class="cahier">
-          <article class="page couverture">
-            <p class="kicker">édition</p>
-            <h2>AnalogicZine</h2>
-            <div class="cadre grand"></div>
-            <p class="bas">à dater</p>
-          </article>
-
-          <article class="page">
-            <div class="cadre grand"><span>01</span></div>
-            <p class="bas">légende</p>
-          </article>
-
-          <article class="page">
-            <p class="kicker">groupe</p>
-            <div class="grille">
-              <div class="cadre"><span>02</span></div>
-              <div class="cadre"><span>03</span></div>
-              <div class="cadre"><span>04</span></div>
-              <div class="cadre"><span>05</span></div>
-            </div>
-          </article>
-
-          <article class="page colophon">
-            <div class="bas">
-              <p class="kicker">colophon</p>
-              <p>Mini édition tirée d'une pellicule argentique.</p>
-              <p>Imprimée depuis le navigateur.</p>
-            </div>
-          </article>
+      <section class="etape" id="apercu">
+        <h1><span>3.</span>Aperçu</h1>
+        <div class="contenu">
+          <button type="button" class="bulle imprimer" onclick="print()">Imprimer</button>
+          <div class="cahier" id="cahier"></div>
         </div>
       </section>
     </main>
+
+    <script src="edition.js"></script>
   </body>
 </html>
