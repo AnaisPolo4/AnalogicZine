@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AnalogicZine</title>
+    <link rel="stylesheet" href="styles.css" />
+    <!--
+      À quoi sert l'app, et comment elle doit fonctionner : fonctionnement.md
+      Ici, seulement l'écran. Trois temps. Rien n'est enregistré.
+    -->
+  </head>
+  <body>
+    <header>
+      <p class="marque">AnalogicZine</p>
+      <nav>
+        <a href="#deposer">Déposer</a>
+        <a href="#rassembler">Rassembler</a>
+        <a href="#imprimer">Imprimer</a>
+      </nav>
+    </header>
+
+    <main>
+      <section id="deposer">
+        <h1>Déposer une pellicule</h1>
+        <p>Les scans d'un développement. Une pellicule donne une édition.</p>
+        <label class="depot">
+          <input type="file" accept="image/*" multiple />
+          <strong>Déposer les scans</strong>
+          <span>ou les choisir sur l'appareil</span>
+        </label>
+        <p class="note">Rien ne quitte cet appareil. Le rangement viendra après.</p>
+      </section>
+
+      <section id="rassembler">
+        <h1>Rassembler</h1>
+        <p>
+          L'app proposera des catégories et des groupes. On n'a pas encore
+          décidé comment. Ces piles sont des emplacements, pas un tri.
+        </p>
+        <div class="piles">
+          <article class="pile">
+            <h2>Groupe 1</h2>
+            <ul class="cadres">
+              <li>01</li>
+              <li>02</li>
+              <li>03</li>
+              <li>04</li>
+            </ul>
+          </article>
+          <article class="pile">
+            <h2>Groupe 2</h2>
+            <ul class="cadres">
+              <li>05</li>
+              <li>06</li>
+            </ul>
+          </article>
+          <article class="pile">
+            <h2>À placer</h2>
+            <ul class="cadres">
+              <li>07</li>
+              <li>08</li>
+              <li>09</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="imprimer">
+        <div class="pas-imprimer">
+          <h1>Mini édition</h1>
+          <p>
+            Quatre pages A5. Couverture, une image, un groupe, un colophon.
+            Le cahier bougera quand on saura comment rassembler.
+          </p>
+          <button type="button" onclick="print()">Imprimer</button>
+        </div>
+
+        <div class="cahier">
+          <article class="page couverture">
+            <p class="kicker">édition</p>
+            <h2>AnalogicZine</h2>
+            <div class="cadre grand"></div>
+            <p class="bas">à dater</p>
+          </article>
+
+          <article class="page">
+            <div class="cadre grand"><span>01</span></div>
+            <p class="bas">légende</p>
+          </article>
+
+          <article class="page">
+            <p class="kicker">groupe</p>
+            <div class="grille">
+              <div class="cadre"><span>02</span></div>
+              <div class="cadre"><span>03</span></div>
+              <div class="cadre"><span>04</span></div>
+              <div class="cadre"><span>05</span></div>
+            </div>
+          </article>
+
+          <article class="page colophon">
+            <div class="bas">
+              <p class="kicker">colophon</p>
+              <p>Mini édition tirée d'une pellicule argentique.</p>
+              <p>Imprimée depuis le navigateur.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
